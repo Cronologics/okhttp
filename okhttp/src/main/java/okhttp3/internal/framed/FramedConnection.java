@@ -434,6 +434,13 @@ public final class FramedConnection implements Closeable {
       frameWriter.goAway(lastGoodStreamId, statusCode, Util.EMPTY_BYTE_ARRAY);
     }
   }
+  
+  /**
+   * Used to determine whether connection has been shut down
+   *
+   * @return {@link boolean} whether connection is shut down
+   */ 
+  public boolean isShutdown(){ return shutdown;}
 
   /**
    * Closes this connection. This cancels all open streams and unanswered pings. It closes the

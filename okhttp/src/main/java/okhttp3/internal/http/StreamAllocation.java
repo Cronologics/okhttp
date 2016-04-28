@@ -162,7 +162,10 @@ public final class StreamAllocation {
 
       // Attempt to get a connection from the pool.
       RealConnection pooledConnection = Internal.instance.get(connectionPool, address, this);
-      if (pooledConnection != null) {
+	  
+      // If connection was framed and has already been shut down it is not valid so don't use
+      if (pooledConnection != null && pooledConnection.framedConnection != null 
+        && !pooledConnection.framedConnection.isShutdown()) {
         this.connection = pooledConnection;
         return pooledConnection;
       }
