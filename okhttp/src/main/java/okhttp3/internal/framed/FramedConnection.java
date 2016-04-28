@@ -650,7 +650,11 @@ public final class FramedConnection implements Closeable {
       FramedStream stream;
       synchronized (FramedConnection.this) {
         // If we're shutdown, don't bother with this stream.
-        if (shutdown) return;
+        // Accepting streamID that is less than or equal to the last good ID specified by the server
+        // Based on the http2 spec even if the connection was shutdown via GoAway
+        if(shutdown && associatedStreamId > lastGoodStreamId) {
+          return;
+        }
 
         stream = getStream(streamId);
 
